@@ -1,11 +1,18 @@
+const menu = document.getElementById("menu");
+const gameContainer = document.getElementById("game-container");
 const player = document.getElementById("player");
 const ball = document.getElementById("ball");
 const scoreDisplay = document.getElementById("score");
+const gameOverScreen = document.getElementById("game-over");
+const finalScore = document.getElementById("final-score");
+const startButton = document.getElementById("start-button");
+const restartButton = document.getElementById("restart-button");
 
 let playerPosition = window.innerWidth / 2 - 50;
 let ballPosition = { x: Math.random() * window.innerWidth, y: 0 };
 let score = 0;
 let speed = 3;
+let gameInterval = null;
 
 // Movimenta o jogador
 document.addEventListener("mousemove", (e) => {
@@ -36,8 +43,7 @@ function updateBall() {
 
   // Verifica se a bola passou
   if (ballPosition.y > window.innerHeight) {
-    alert(`Fim de jogo! Sua pontuação foi: ${score}`);
-    resetGame();
+    endGame();
   }
 }
 
@@ -47,18 +53,29 @@ function resetBall() {
   ballPosition.y = 0;
 }
 
-// Reinicia o jogo
-function resetGame() {
+// Inicia o jogo
+function startGame() {
   score = 0;
   speed = 3;
   scoreDisplay.textContent = `Pontuação: ${score}`;
+  scoreDisplay.style.visibility = "visible";
+  menu.classList.remove("active");
+  gameOverScreen.classList.remove("active");
   resetBall();
+  gameInterval = setInterval(updateBall, 16);
 }
 
-// Atualiza o jogo a cada frame
-function gameLoop() {
-  updateBall();
-  requestAnimationFrame(gameLoop);
+// Termina o jogo
+function endGame() {
+  clearInterval(gameInterval);
+  finalScore.textContent = `Sua pontuação: ${score}`;
+  gameOverScreen.classList.add("active");
+  scoreDisplay.style.visibility = "hidden";
 }
 
-gameLoop();
+// Eventos de início e reinício
+startButton.addEventListener("click", startGame);
+restartButton.addEventListener("click", startGame);
+
+// Exibe o menu inicial
+menu.classList.add("active");
