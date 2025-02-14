@@ -3,17 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jogo 2D Profissional</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Jogo 2D</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.55.2/phaser.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #87ceeb;
+    }
+    canvas {
+      display: block;
+    }
+  </style>
 </head>
 <body>
-  <div id="menu">
-    <h1>Bem-vindo ao Jogo 2D!</h1>
-    <button id="startButton">Iniciar Jogo</button>
-  </div>
-
-  <canvas id="gameCanvas"></canvas>
-
-  <script src="script.js"></script>
+  <script src="game.js"></script>
 </body>
 </html>
