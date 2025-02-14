@@ -1,37 +1,95 @@
-// Criar a cena
-const scene = new THREE.Scene();
+// Configuração inicial do jogo
+const config = {
+  type: Phaser.AUTO,
+  width: 800,
+  height: 600,
+  parent: "game",
+  physics: {
+    default: "arcade",
+    arcade: {
+      gravity: { y: 0 },
+      debug: false
+    }
+  },
+  scene: [MenuScene, GameScene]
+};
 
-// Criar a câmera
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.z = 5;
+// Inicializa o jogo
+const game = new Phaser.Game(config);
 
-// Criar o renderizador
-const renderer = new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
+// Cena do Menu
+class MenuScene extends Phaser.Scene {
+  constructor() {
+    super("MenuScene");
+  }
 
-// Criar um cubo
-const geometry = new THREE.BoxGeometry();
-const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-const cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
+  preload() {
+    this.load.image("background", "https://i.imgur.com/3e8cA3U.png");
+  }
 
-// Função de animação
-function animate() {
-    requestAnimationFrame(animate);
+  create() {
+    this.add.image(400, 300, "background").setScale(2);
+    const startText = this.add.text(400, 300, "Start Game", {
+      font: "32px Arial",
+      fill: "#fff"
+    });
+    startText.setOrigin(0.5, 0.5);
+    startText.setInteractive();
 
-    // Rotacionar o cubo
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.01;
-
-    renderer.render(scene, camera);
+    startText.on("pointerdown", () => {
+      this.scene.start("GameScene");
+    });
+  }
 }
 
-animate();
+// Cena do Jogo
+class GameScene extends Phaser.Scene {
+  constructor() {
+    super("GameScene");
+  }
 
-// Redimensionar ao ajustar a tela
-window.addEventListener('resize', () => {
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-});
+  preload() {
+    this.load.image("tiles", "https://i.imgur.com/z7RZdP3.png");
+    this.load.image("player", "https://i.imgur.com/Q6f0nLk.png");
+  }
+
+  create() {
+    // Cria o mapa
+    this.add.tileSprite(400, 300, 800, 600, "tiles");
+
+    // Adiciona o jogador
+    this.player = this.physics.add.sprite(400, 300, "player");
+    this.player.setCollideWorldBounds(true);
+
+    // Configura os controles
+    this.cursors = this.input.keyboard.createCursorKeys();
+
+    // Suporte para dispositivos móveis
+    this.input.addPointer();
+    this.add.text(10, 10, "Use setas ou toque para mover.", {
+      font: "16px Arial",
+      fill: "#fff"
+    });
+  }
+
+  update() {
+    const speed = 200;
+
+    // Movimento do jogador
+    if (this.cursors.left.isDown || this.input.pointer1.isDown) {
+      this.player.setVelocityX(-speed);
+    } else if (this.cursors.right.isDown || this.input.pointer2.isDown) {
+      this.player.setVelocityX(speed);
+    } else {
+      this.player.setVelocityX(0);
+    }
+
+    if (this.cursors.up.isDown) {
+      this.player.setVelocityY(-speed);
+    } else if (this.cursors.down.isDown) {
+      this.player.setVelocityY(speed);
+    } else {
+      this.player.setVelocityY(0);
+    }
+  }
+}
