@@ -1,78 +1,22 @@
 body {
   margin: 0;
+  padding: 0;
   font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
-  overflow: hidden;
-}
-
-#menu, #game-over {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  width: 100%;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.8);
+  background: #222;
   color: white;
-  z-index: 2;
-  visibility: hidden;
-  opacity: 0;
-  transition: visibility 0s, opacity 0.5s;
+  text-align: center;
 }
 
-#menu.active, #game-over.active {
-  visibility: visible;
-  opacity: 1;
-}
-
-#menu button, #game-over button {
-  padding: 10px 20px;
-  font-size: 18px;
-  background-color: #ff4500;
-  color: white;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-  margin-top: 20px;
-}
-
-#game-container {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  background-color: #87cefa;
-  overflow: hidden;
-}
-
-#player {
+#menu {
   position: absolute;
-  bottom: 20px;
+  top: 50%;
   left: 50%;
-  width: 100px;
-  height: 20px;
-  background-color: #ff4500;
-  border-radius: 10px;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
 }
 
-#ball {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 20px;
-  height: 20px;
-  background-color: #32cd32;
-  border-radius: 50%;
-  transform: translateX(-50%);
-}
-
-#score {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  font-size: 24px;
-  color: #333;
-  z-index: 1;
-  visibility: hidden;
+#gameCanvas {
+  display: none;
+  background: url('assets/background.jpg') no-repeat center center;
+  background-size: cover;
+  border: 2px solid #fff;
 }
